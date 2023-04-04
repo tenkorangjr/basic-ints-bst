@@ -12,7 +12,6 @@ public class BasicIntBST implements Iterable<Integer> {
         }
     }
 
-    // this is the head
     Node root;
 
     public void add(int val) {
@@ -34,23 +33,20 @@ public class BasicIntBST implements Iterable<Integer> {
                 curNode.balanceFactor -= 1;
                 curNode.left = new Node(val);
             } else {
-                // save previous balance factor to edit later
-                int temp = curNode.left.balanceFactor;
+                int prevBalanceFactor = curNode.left.balanceFactor;
                 add(val, curNode.left);
-                if (curNode.left.balanceFactor < temp && curNode.left.balanceFactor < 0) {
+                if (curNode.left.balanceFactor < prevBalanceFactor && curNode.left.balanceFactor < 0) {
                     curNode.balanceFactor -= 1;
                 }
-
-                // if statement goes after add
             }
         } else {
             if (curNode.right == null) {
                 curNode.balanceFactor += 1;
                 curNode.right = new Node(val);
             } else {
-                int temp = curNode.right.balanceFactor;
+                int prevBalanceFactor = curNode.right.balanceFactor;
                 add(val, curNode.right);
-                if (curNode.right.balanceFactor > temp && curNode.right.balanceFactor > 0) {
+                if (curNode.right.balanceFactor > prevBalanceFactor && curNode.right.balanceFactor > 0) {
                     curNode.balanceFactor += 1;
                 }
             }
@@ -59,9 +55,11 @@ public class BasicIntBST implements Iterable<Integer> {
 
     private class BSTIterator implements Iterator<Integer> {
         Stack<Node> stack;
-        Node curNode;
 
         public BSTIterator() {
+            /*
+             * Constructor that initialises stack to store the left nodes
+             */
             stack = new Stack<Node>();
             Node curNode = root;
             while (curNode != null) {
@@ -72,6 +70,10 @@ public class BasicIntBST implements Iterable<Integer> {
 
         @Override
         public boolean hasNext() {
+            /*
+             * Check if there is a next for the iterator
+             */
+
             if (stack.size() == 0) {
                 return false;
             }
@@ -80,7 +82,9 @@ public class BasicIntBST implements Iterable<Integer> {
 
         @Override
         public Integer next() {
-            // return top item off of stack
+            /*
+             * Return the next item in the tree
+             */
             Node popped = stack.pop();
             Node cur = popped.right;
             while (cur != null) {
@@ -113,28 +117,15 @@ public class BasicIntBST implements Iterable<Integer> {
     }
 
     public static void main(String[] args) {
-        BasicIntBST ints = new BasicIntBST();
+        BasicIntBST bst = new BasicIntBST();
         for (int i = 0; i < 10; i++) {
-            ints.add((int) (Math.random() * 10));
-            System.out.println(ints);
+            bst.add(i * 2);
+            System.out.println(bst);
         }
 
-        for (int num : ints) {
+        for (int num : bst) {
             System.out.println(num);
         }
-        // BasicIntBST ints = new BasicIntBST();
-        // Node n = new Node(4);
-        // System.out.println("4's balance factor" + n.balanceFactor);
-        // // ints.add(2, n);
-        // // ints.add(1, n);
-        // ints.add(3, n);
-        // ints.add(6, n);
-        // // ints.add(9, n);
-        // // ints.add(5, n);
-
-        // System.out.println("2's balance factor" + n.left.balanceFactor);
-        // System.out.println("4's balance factor" + n.balanceFactor);
-        // System.out.println("6's balance factor" + n.right.balanceFactor);
 
     }
 }
