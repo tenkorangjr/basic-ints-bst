@@ -1,2 +1,2 @@
-# basic-ints-bst
+# Basic Int BST
 Iterable BST with balance factor
